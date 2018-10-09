@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class ComputerModel1 {
     public static void main(String[] args){
@@ -13,8 +15,8 @@ public class ComputerModel1 {
         result1.addAll(Generator.gen1(T, lambda));
         result2.addAll(Generator.gen2(T,lambda));
 
-        System.out.println("Однородный: " + result1 + '\n');
-        System.out.println("Неоднородный: " + result2 + '\n');
+        output(result1);
+        output(result2);
     }
 
     private static double input(double num, String name){
@@ -23,5 +25,11 @@ public class ComputerModel1 {
         num = reader.nextDouble();
         System.out.println();
         return num;
+    }
+
+    private static void output (ArrayList<Double> x){
+        System.out.println("Однородный: " + x + '\n');
+        System.out.println("Всего " + x.size() + " элементов.");
+        System.out.println("Сумма элементов равна = " + x.stream().mapToDouble(i -> i).sum());
     }
 }
