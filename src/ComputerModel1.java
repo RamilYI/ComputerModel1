@@ -31,50 +31,26 @@ public class ComputerModel1 {
     private static void output (ArrayList<Double> x, String k){
         System.out.println(k + ": " + x + '\n');
         System.out.println("Всего " + x.size() + " элементов.");
-        System.out.println("Сумма элементов равна = " + x.stream().mapToDouble(i -> i).sum());
-        System.out.println("выборочная средняя равна = " + nixi(x));
-        System.out.println("вероятности P = " + Pi(x));
-        ArrayList<Double> p = new ArrayList<>();
-        p.addAll(Pi(x));
-        System.out.println("теор частоты = " + ni(p, x.size()));
-        System.out.println("сумма частот = " + ni(p, x.size()).stream().mapToDouble(i -> i).sum());
+        System.out.println("Число степеней свободы: " + (x.size()-2));
+        System.out.println("Среднее квадратное разностей между эмпирическими и теоретическими частотами = " + calculate(x));
     }
 
-    private static double nixi(ArrayList<Double> x){
-        double res = 0.0;
-        for (int i = 0; i < x.size(); i++){
-            res += x.get(i)*(i);
+    private static double calculate(ArrayList<Double> x){
+        double sum = x.stream().mapToDouble(i -> i).sum();
+        double average = 0;
+        for (int i = 0; i < x.size(); i++) average += i * x.get(i);
+        average = average / sum;
+
+        double[] P = new double[x.size()], n = new double[x.size()], expectedfrequencies = new double[x.size()];
+        for(int i = 0; i < x.size(); i++) {
+            P[i] = (Math.pow(average, i)*Math.pow(Math.E, -average))/factorial(i);
+            n[i] = (sum*P[i]);
+            expectedfrequencies[i] = Math.pow((x.get(i) - n[i]),2)/n[i];
         }
-
-        return res/x.size();
+        return Arrays.stream(expectedfrequencies).sum();
     }
 
-    private static ArrayList<Double> Pi (ArrayList<Double> x){
-        ArrayList<Double> P = new ArrayList<>();
-        for (int i = 0; i < x.size(); i++) P.add((Math.pow(nixi(x), i) * Math.pow(Math.E, (-nixi(x))))/factorial(i));
-        return P;
-    }
-
-    private static ArrayList<Double> ni(ArrayList<Double> x, int y){
-        ArrayList<Double> n = new ArrayList<>();
-        double ex = 0, sum = 0;
-        for (int i = 0; i < x.size(); i++){
-            ex = y * x.get(i);
-            if (ex >= 5.0) n.add(ex);
-            else{
-                System.out.println("элемент " + i + " был объединен");
-                sum += ex;
-                if (sum >= 5.0 || (i + 1) == x.size()){
-                    System.out.println("разъединение");
-                    n.add(sum);
-                    sum = 0.0;
-                }
-            }
-        }
-        return n;
-    }
-
-    public static double factorial(int x){
+    private static double factorial(int x){
         int fact = 1;
         for (; x > 0; fact *= x--);
         return fact;
