@@ -36,18 +36,20 @@ public class ComputerModel1 {
     }
 
     private static double calculate(ArrayList<Double> x){
-        double sum = x.stream().mapToDouble(i -> i).sum();
+        double sum = x.stream().mapToDouble(i -> i).sum(); //общее число
         double average = 0;
         for (int i = 0; i < x.size(); i++) average += i * x.get(i);
-        average = average / sum;
+        average = average / sum; //среднее, к тому же оценка для параметра распределения Пуассона
 
+        //теор частоты
         double[] P = new double[x.size()], n = new double[x.size()], expectedfrequencies = new double[x.size()];
         for(int i = 0; i < x.size(); i++) {
             P[i] = (Math.pow(average, i)*Math.pow(Math.E, -average))/factorial(i);
-            n[i] = (sum*P[i]);
-            expectedfrequencies[i] = Math.pow((x.get(i) - n[i]),2)/n[i];
+            n[i] = (sum * P[i]);
+            expectedfrequencies[i] = Math.pow((x.get(i) - n[i]),2)/n[i]; //сравнение теор и эмпир частот
         }
-        return Arrays.stream(expectedfrequencies).sum();
+        return Arrays.stream(expectedfrequencies).sum(); //результат сравнения.
+        //далее следует сравнить с критической точкой распределения по таблице хи-квадрат
     }
 
     private static double factorial(int x){
