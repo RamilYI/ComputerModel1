@@ -1,8 +1,6 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class ComputerModel1 {
     public static void main(String[] args){
@@ -17,7 +15,7 @@ public class ComputerModel1 {
         result2.addAll(Generator.gen2(T,lambda));
 
         output(result1, "Однородный");
-        output(result2, "Неоднородный");
+               output(result2, "Неоднородный");
     }
 
     private static double input(double num, String name){
